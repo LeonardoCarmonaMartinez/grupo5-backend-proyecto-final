@@ -119,8 +119,8 @@ app.delete("/productos/:idproducto", async (req, res) => {
 
 
 //               Ruta por defecto
-app.use("*", (req, res) => {
-    res.status(404).send({ message: "La ruta consultada no existe" })
+app.use("/", (req, res) => {
+    res.status(200).send({ message: "Ruta raiz" })
 });
 
 module.exports = { app };
