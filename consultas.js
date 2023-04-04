@@ -4,10 +4,11 @@ const { Pool } = require('pg');
 
 // Instancia de clase Pool
 const pool= new Pool({
-  host: "localhost",
-  user:"postgres",
-  password: "Angie2128",
-  database: "conecta_dos",
+  host: "bjfcnsesorhhrgh8f0bj-postgresql.services.clever-cloud.com",
+  user:"ukwjrkcag4d5cuucxwvk",
+  password: "GFho4Km5Q6dkaVbpBCiMSdsr2H80FU",
+  database: "bjfcnsesorhhrgh8f0bj",
+  port: 5432,
   allowExitOnIdle: true
 });
 

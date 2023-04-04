@@ -16,8 +16,8 @@ const { verificaCredenciales,
 // Uso de express
 const app = express();
 // const port = process.env.PORT || "8080"
-//app.listen(port, console.log("SERVIDOR ENCENDIDO"));
 app.listen(3001, console.log("SERVIDOR ENCENDIDO"));
+// app.listen(3001, console.log("SERVIDOR ENCENDIDO"));
 
 app.use(express.json());
 app.use(cors());
@@ -65,6 +65,7 @@ app.post("/usuario", async (req, res) => {
 
 //Para verificar credenciales e iniciar sesión de usuario ya registrado
 app.post("/login", async (req, res) => {
+  console.log("aloha")
   try {
     const {correo, contraseña} = req.body;
     console.log(req.body)
@@ -72,12 +73,10 @@ app.post("/login", async (req, res) => {
     if( response === 1) {
       const token = jwt.sign({ correo }, secretKey);
       console.log(token)
-      res.send({"code":200, "message": "Usuario validado correctamente", "token":token})
-    }
-    if(response === 0){
+      res.status(200).send(token)
+    } else if(response === 0){
       res.sendStatus(401)
-    }
-    else {res.status(500).send(response)}
+    } else {res.status(500).send(response)}
     
   } catch (error) {
       console.log(error)
@@ -102,7 +101,7 @@ app.post("/productos", async (req, res) => {
 //                        Rutas delete
 
 //Para borrar un producto identificado por su id de producto
-app.delete("/productos/:idproducto",verificacionDeToken, async (req, res) => {
+app.delete("/productos/:idproducto", async (req, res) => {
   try{
     const { idproducto } = req.params
     const Authorization = req.header("Authorization")

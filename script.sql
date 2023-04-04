@@ -43,6 +43,7 @@ INSERT INTO usuarios values   ( DEFAULT,
                               );
 
 INSERT INTO productos values  ( DEFAULT,
+                                1,
                                 'CHAQUETA DE MEZCLILLA HOMBRE',
                                 'https://cf.shopee.com.co/file/27e1ae36d7bed2cd2b2ba16db4fea94f',
                                 'Chaqueta de mezclilla para hombre con forro interior de chiporro. Talla L.',
@@ -52,6 +53,7 @@ INSERT INTO productos values  ( DEFAULT,
                               );
 
 INSERT INTO productos values  ( DEFAULT,
+                                2
                                 'CAMA IGLÚ PARA GATO',
                                 'https://m.media-amazon.com/images/I/71r4vsh+8QL._AC_SX679_.jpg',
                                 'Cómoda cama nido para gatos tipo iglú de poliéster. Las medidas son 40x40x35 y cuenta con cojín removible.',
