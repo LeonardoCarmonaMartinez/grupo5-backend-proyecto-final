@@ -27,7 +27,7 @@ const pool= new Pool({
 const infoUsuario = async () => {
   const consulta = "SELECT * FROM usuarios"
   const dataUsuarios = await pool.query(consulta);
-  return(dataUsuarios)
+  return(dataUsuarios.rows)
 
 };
 
@@ -40,13 +40,32 @@ const infoProductos = async () => {
 
 //Consultas rutas post
 const verificaCredenciales =  async (correo, contrasena) => {
-  const consulta = "SELECT * FROM usuarios WHERE correo = $1 AND contrasena = $2";
-  const valores = [ correo, contrasena ];
-  const { rowCount } = await pool.query(consulta, valores)
-  if(rowCount === 1 || rowCount === 0){
-    return rowCount
+
+  try {
+    const consultaExisteUsuario = "SELECT idUsuario FROM usuarios WHERE correo = $1 AND contrasena = $2 limit 1";
+    const valores = [ correo, contrasena ];
+    const data = await pool.query(consultaExisteUsuario, valores);
+
+    var idUsuario = 0;
+    
+    if (data != null) {
+      idUsuario =  data.rows[0].idusuario;
+    } else {
+      return 0;
+    }
+
+    if(idUsuario != 0){
+      return idUsuario
+    }
+    else{ return {"code":500, "message": "Problemas al ejecutar la consulta"}}
+    
+  } catch (error) {
+    console.log("se callo al verificar credenciales");
+    console.log(error);
+    return 0;
   }
-  else{ return {"code":500, "message": "Problemas al ejecutar la consulta"}}
+
+};
   
  
   // const { contraseña: contraseñaEncriptada } = usuario;
@@ -54,7 +73,6 @@ const verificaCredenciales =  async (correo, contrasena) => {
   // if (!rowCount) 
   //   throw { code: 404, message: "No se encuentra usuario con estas credenciales" }
 
-};
 
 const registrarUsuario = async (nombre, edad, direccion, correo, contrasena, telefono ) => {
   // const contraseñaEncriptada = bcrypt.hashSync(contrasena);
@@ -70,7 +88,6 @@ const agregarProducto = async (idusuario, titulo, imagen, descripcion, precio, c
   const consulta = "INSERT INTO productos VALUES (DEFAULT, $1, $2, $3, $4, $5, $6, $7)";
   const valores = [idusuario, titulo, imagen, descripcion, precio, correo, telefono];
   const resultado = await pool.query(consulta, valores)
-  console.log("Producto agregado con éxito")
   return(resultado)
 };
 

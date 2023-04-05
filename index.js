@@ -18,7 +18,13 @@ const app = express();
 app.listen(3001, console.log("SERVIDOR ENCENDIDO"));
 
 app.use(express.json());
-app.use(cors());
+// app.use(cors());
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
 
 
 //                      Rutas get
@@ -65,21 +71,46 @@ app.post("/registro", async (req, res) => {
 app.post("/login", async (req, res) => {
   try {
     const {correo, contrasena} = req.body;
-    console.log(req.body)
-    const response = await verificaCredenciales(correo, contrasena);
-    if( response === 1) {
+    
+    const idUsuario = await verificaCredenciales(correo, contrasena);
+
+    if( idUsuario != 0) {
       const token = jwt.sign({ correo }, secretKey);
-      console.log(token)
-      res.status(200).send(token)
-    } else if(response === 0){
+      const data = {
+        token: token,
+        idUsuario: idUsuario
+      };
+      res.status(200).send(data);
+    } else if(idUsuario === 0){
       res.sendStatus(401)
-    } else {res.status(500).send(response)}
+    } else {res.status(500).send({})}
     
   } catch (error) {
       console.log(error)
       res.status(error.code || 500).send(error)    
   }
 });
+
+
+
+// app.post("/login", async (req, res) => {
+//   try {
+//     const {correo, contrasena} = req.body;
+//     console.log(req.body)
+//     const response = await verificaCredenciales(correo, contrasena);
+//     if( response === 1) {
+//       const token = jwt.sign({ correo }, secretKey);
+//       console.log(token)
+//       res.status(200).send(token)
+//     } else if(response === 0){
+//       res.sendStatus(401)
+//     } else {res.status(500).send(response)}
+    
+//   } catch (error) {
+//       console.log(error)
+//       res.status(error.code || 500).send(error)    
+//   }
+// });
 
 //Para añadir un producto nuevo
 app.post("/productos", async (req, res) => {
