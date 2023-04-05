@@ -1,21 +1,20 @@
 // Importaciones
-const express = require('express');
-const cors = require('cors')
+const express = require("express");
+const cors = require("cors")
 const jwt = require("jsonwebtoken");
 
 // const { confirmarCredenciales, verificacionDeToken } =require('./middlewares')
-const { secretKey } = require('./secretKey') 
+const { secretKey } = require("./secretKey") 
 const { verificaCredenciales,
         infoProductos,
         infoUsuario,
         registrarUsuario, 
         agregarProducto,
-        borrarProducto} = require('./consultas');
+        borrarProducto} = require("./consultas");
 
 
 // Uso de express
 const app = express();
-// const port = process.env.PORT || "8080"
 app.listen(3001, console.log("SERVIDOR ENCENDIDO"));
 
 app.use(express.json());
@@ -25,7 +24,7 @@ app.use(cors());
 //                      Rutas get
 
 //Para ver información de los usuarios registrados
-app.get("/perfil/:idusuario", async (req, res) => {
+app.get("/perfil", async (req, res) => {
   try {
     const usuario = await infoUsuario()
     res.json(usuario)
@@ -53,8 +52,8 @@ app.get("/productos", async (req, res) => {
 //Para registrar un usuario nuevo
 app.post("/registro", async (req, res) => {
   try {
-    const { nombre, edad, correo, contraseña, telefono, imagen } = req.body
-    await registrarUsuario( nombre, edad, correo, contraseña, telefono, imagen )
+    const { nombre, edad, direccion, correo, contrasena, telefono } = req.body
+    await registrarUsuario( nombre, edad, direccion, correo, contrasena, telefono )
     res.send("Usuario registrado con éxito")
   } catch (error) {
     res.status(error.code).send(error)
@@ -64,11 +63,10 @@ app.post("/registro", async (req, res) => {
 
 //Para verificar credenciales e iniciar sesión de usuario ya registrado
 app.post("/login", async (req, res) => {
-  console.log("aloha")
   try {
-    const {correo, contraseña} = req.body;
+    const {correo, contrasena} = req.body;
     console.log(req.body)
-    const response = await verificaCredenciales(correo, contraseña);
+    const response = await verificaCredenciales(correo, contrasena);
     if( response === 1) {
       const token = jwt.sign({ correo }, secretKey);
       console.log(token)
@@ -86,8 +84,8 @@ app.post("/login", async (req, res) => {
 //Para añadir un producto nuevo
 app.post("/productos", async (req, res) => {
   try {
-    const { titulo, imagen, descripcion, precio, correo, telefono } = req.body;
-    await agregarProducto(titulo, imagen, descripcion, precio, correo, telefono );
+    const {idusuario, titulo, imagen, descripcion, precio, correo, telefono} = req.body;
+    await agregarProducto(idusuario, titulo, imagen, descripcion, precio, correo, telefono );
     res.send("Producto agregado con éxito")  
   } catch (error) {
     res.status(error.code).send(error)
@@ -121,9 +119,5 @@ app.use("/", (req, res) => {
     res.status(200).send({ message: "Ruta Home" })
 });
 
-//               Ruta por defecto
-app.use("*", (req, res) => {
-  res.status(400).send({ message: "La ruta consultada no existe" })
-});
 
 module.exports = { app };
