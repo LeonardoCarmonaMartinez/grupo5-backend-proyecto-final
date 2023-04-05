@@ -7,8 +7,7 @@ CREATE TABLE usuarios   ( idusuario serial primary key NOT NULL,
                           edad int,
                           correo varchar (255) NOT NULL,
                           contraseña varchar (100) NOT NULL,                       
-                          telefono varchar (100),                        
-                          imagen varchar (255)
+                          telefono varchar (100)
                         );
 
 CREATE TABLE productos  ( idproducto serial primary key NOT NULL,
@@ -29,8 +28,7 @@ INSERT INTO usuarios values   ( DEFAULT,
                                 21,
                                 'ejemploprimero@gmail.com',
                                 'estaEsMicontraseña',
-                                '+56912312312',
-                                'https://contenidos.benidorm.org/sites/default/files/styles/user_profile_picture/public/2020-06/default_user.png'
+                                '+56912312312'
                               );
 
 INSERT INTO usuarios values   ( DEFAULT,
@@ -38,8 +36,7 @@ INSERT INTO usuarios values   ( DEFAULT,
                                 35,
                                 'ejemplosegundo1999@gmail.com',
                                 'noTengocontraseña',
-                                '+56932132132',
-                                'https://contenidos.benidorm.org/sites/default/files/styles/user_profile_picture/public/2020-06/default_user.png'
+                                '+56932132132'
                               );
 
 INSERT INTO productos values  ( DEFAULT,
@@ -53,7 +50,7 @@ INSERT INTO productos values  ( DEFAULT,
                               );
 
 INSERT INTO productos values  ( DEFAULT,
-                                2
+                                2,
                                 'CAMA IGLÚ PARA GATO',
                                 'https://m.media-amazon.com/images/I/71r4vsh+8QL._AC_SX679_.jpg',
                                 'Cómoda cama nido para gatos tipo iglú de poliéster. Las medidas son 40x40x35 y cuenta con cojín removible.',

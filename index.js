@@ -17,7 +17,6 @@ const { verificaCredenciales,
 const app = express();
 // const port = process.env.PORT || "8080"
 app.listen(3001, console.log("SERVIDOR ENCENDIDO"));
-// app.listen(3001, console.log("SERVIDOR ENCENDIDO"));
 
 app.use(express.json());
 app.use(cors());
@@ -26,7 +25,7 @@ app.use(cors());
 //                      Rutas get
 
 //Para ver información de los usuarios registrados
-app.get("/usuarios", async (req, res) => {
+app.get("/perfil/:idusuario", async (req, res) => {
   try {
     const usuario = await infoUsuario()
     res.json(usuario)
@@ -52,7 +51,7 @@ app.get("/productos", async (req, res) => {
 //                        Rutas post
 
 //Para registrar un usuario nuevo
-app.post("/usuario", async (req, res) => {
+app.post("/registro", async (req, res) => {
   try {
     const { nombre, edad, correo, contraseña, telefono, imagen } = req.body
     await registrarUsuario( nombre, edad, correo, contraseña, telefono, imagen )
@@ -117,10 +116,14 @@ app.delete("/productos/:idproducto", async (req, res) => {
 
 
 
+//               Ruta Home
+app.use("/", (req, res) => {
+    res.status(200).send({ message: "Ruta Home" })
+});
 
 //               Ruta por defecto
-app.use("/", (req, res) => {
-    res.status(200).send({ message: "Ruta raiz" })
+app.use("*", (req, res) => {
+  res.status(400).send({ message: "La ruta consultada no existe" })
 });
 
 module.exports = { app };
