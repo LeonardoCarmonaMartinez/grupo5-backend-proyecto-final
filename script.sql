@@ -11,9 +11,9 @@ CREATE TABLE usuarios   ( idusuario serial primary key NOT NULL,
                           telefono varchar (100)
                         );
 
-CREATE TABLE productos  ( idproducto serial primary key NOT NULL,
-                          idusuario serial NOT NULL,
-						              FOREIGN KEY (idusuario)
+CREATE TABLE productos  ( idproducto serial primary key,
+                          usuario_id integer NOT NULL,
+						              FOREIGN KEY (usuario_id)
 					  	            REFERENCES usuarios(idusuario),
                           titulo varchar(100),
                           imagen varchar (255),
@@ -66,3 +66,30 @@ INSERT INTO productos values  ( DEFAULT,
 -- Consultas en tablas
 SELECT * FROM usuarios;
 SELECT * FROM productos;
+
+-- Ejemplo Login
+-- {
+--   "correo": "ejemploprimero@gmail.com", 
+--   "contrasena": "estaesmicontrasena"
+-- }
+
+-- Ejemplo Agregar Producto
+-- {
+--   "idusuario": 1,
+--   "titulo": "BOTAS PARA LLUVIA", 
+--   "imagen": "https://cdn.gacel.cl/28275-home_default/bota-leda-negro-1410181.jpg",
+--   "descripcion": "Botas negras de cuero importadas",
+--   "precio": "80000",
+--   "correoProducto": "ejemploprimero@gmail.com",
+--   "telefonoProducto": "56912312312"
+-- }
+
+-- Ejemplo Registra Nuevo Usuario
+-- {
+--   "nombre": "Leonardo Carmona",
+--   "edad": "36", 
+--   "direccion": "Peninsula 2128",
+--   "correo": "leonardo.carmona.m@gmail.com",
+--   "contrasena": "minombreesleo",
+--   "telefono": "+5697995548"
+-- }
